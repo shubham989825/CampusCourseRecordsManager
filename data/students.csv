@@ -1,0 +1,5 @@
+id,regNo,fullName,email,status
+S001,2023001,John Doe,john.doe@uni.edu,ACTIVE
+S002,2023002,Jane Smith,jane.smith@uni.edu,ACTIVE
+S003,2023003,Michael Johnson,michael.johnson@uni.edu,ACTIVE
+S004,2023004,Emily Brown,emily.brown@uni.edu,ACTIVE
