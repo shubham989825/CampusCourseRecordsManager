@@ -3,30 +3,49 @@ package edu.ccrm.cli;
 import edu.ccrm.domain.Semester;
 import edu.ccrm.domain.Grade;
 import edu.ccrm.domain.Student;
+import edu.ccrm.domain.Course;
+import edu.ccrm.domain.Enrollment;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== CCRM OOP Inheritance Test ===");
+        System.out.println("=== CCRM Course Management Test ===");
         
-        // Test Semester and Grade (previous functionality)
-        System.out.println("Semester: " + Semester.SUMMER);
-        System.out.println("Grade for 85: " + Grade.fromScore(85));
+        // Create courses using Builder pattern
+        Course cs101 = new Course.Builder("CS101", "Introduction to Programming")
+            .credits(3)
+            .instructor("Dr. Smith")
+            .semester(Semester.SUMMER)
+            .department("Computer Science")
+            .build();
+            
+        Course math201 = new Course.Builder("MATH201", "Calculus I")
+            .credits(4)
+            .instructor("Dr. Johnson")
+            .semester(Semester.SUMMER)
+            .department("Mathematics")
+            .build();
         
-        // Test OOP Inheritance - Create a Student
-        System.out.println("\n=== Testing Student Inheritance ===");
+        // Create student
         Student student1 = new Student("S001", "2023001", "John Doe", "john.doe@uni.edu");
         
-        // Demonstrate polymorphism - Student IS-A Person
-        student1.displayProfile(); // Calls overridden method
+        // Test enrollment
+        Enrollment enrollment1 = student1.enrollInCourse(cs101);
+        Enrollment enrollment2 = student1.enrollInCourse(math201);
         
-        // Test student functionality
-        student1.enrollInCourse("CS101");
-        student1.enrollInCourse("MATH201");
+        // Record grades
+        enrollment1.recordMarks(85.5);
+        enrollment2.recordMarks(92.0);
+        
+        // Display results
+        System.out.println("\n=== Student Summary ===");
+        student1.displayProfile();
         student1.displayEnrolledCourses();
         
-        // Demonstrate toString() polymorphism
-        System.out.println("\nStudent toString(): " + student1);
+        System.out.println("\n=== Grade Report ===");
+        System.out.println("CS101 - Marks: " + enrollment1.getMarks() + ", Grade: " + enrollment1.getGrade());
+        System.out.println("MATH201 - Marks: " + enrollment2.getMarks() + ", Grade: " + enrollment2.getGrade());
+        System.out.println("Total Credits: " + student1.getTotalCredits());
         
-        System.out.println("\nOOP inheritance working correctly!");
+        System.out.println("\nCourse management working correctly!");
     }
 }

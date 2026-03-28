@@ -6,17 +6,15 @@ import java.util.List;
 public class Student extends Person {
     private String regNo;
     private boolean active;
-    private List<String> enrolledCourses; // Simple list for now
+    private List<Enrollment> enrollments; // Now using Enrollment objects
     
-    // Constructor using super() - demonstrating inheritance
     public Student(String id, String regNo, String fullName, String email) {
-        super(id, fullName, email); // Call parent constructor
+        super(id, fullName, email);
         this.regNo = regNo;
         this.active = true;
-        this.enrolledCourses = new ArrayList<>();
+        this.enrollments = new ArrayList<>();
     }
     
-    // Implement abstract method - demonstrating polymorphism
     @Override
     public void displayProfile() {
         System.out.println("=== Student Profile ===");
@@ -24,20 +22,29 @@ public class Student extends Person {
         System.out.println("Full Name: " + getFullName());
         System.out.println("Email: " + getEmail());
         System.out.println("Status: " + (active ? "Active" : "Inactive"));
-        System.out.println("Courses Enrolled: " + enrolledCourses.size());
+        System.out.println("Courses Enrolled: " + enrollments.size());
     }
     
-    // Business methods
-    public void enrollInCourse(String courseCode) {
-        enrolledCourses.add(courseCode);
-        System.out.println("Enrolled in: " + courseCode);
+    // Updated enrollment method using Course objects
+    public Enrollment enrollInCourse(Course course) {
+        Enrollment enrollment = new Enrollment(this, course);
+        enrollments.add(enrollment);
+        System.out.println("Enrolled " + getFullName() + " in " + course.getCode());
+        return enrollment;
     }
     
     public void displayEnrolledCourses() {
         System.out.println("Courses enrolled by " + getFullName() + ":");
-        for (String course : enrolledCourses) {
-            System.out.println("- " + course);
+        for (Enrollment enrollment : enrollments) {
+            System.out.println("- " + enrollment.getCourse().getCode() + 
+                             " (" + enrollment.getCourse().getTitle() + ")");
         }
+    }
+    
+    public int getTotalCredits() {
+        return enrollments.stream()
+                         .mapToInt(e -> e.getCourse().getCredits())
+                         .sum();
     }
     
     // Getters and setters
@@ -47,12 +54,11 @@ public class Student extends Person {
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
     
-    public List<String> getEnrolledCourses() { return enrolledCourses; }
+    public List<Enrollment> getEnrollments() { return enrollments; }
     
-    // Override toString() - demonstrating polymorphism
     @Override
     public String toString() {
-        return String.format("Student[RegNo: %s, Name: %s, Email: %s]", 
-                           regNo, getFullName(), getEmail());
+        return String.format("Student[RegNo: %s, Name: %s, Email: %s, Credits: %d]", 
+                           regNo, getFullName(), getEmail(), getTotalCredits());
     }
 }
