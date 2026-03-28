@@ -159,6 +159,6 @@ java -ea edu.ccrm.cli.Main
 
 This project is for educational purposes as part of academic coursework.
 
-Developed by: Abhigyan Sinha
+Developed by: Shubham Pratap Singh
 Course: Programming in Java
 Institution: VIT Bhopal University
